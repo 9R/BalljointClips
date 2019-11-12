@@ -26,6 +26,10 @@ Fi= 40 ;
 // radius of inner sphere = Ri
 Ri= 9.5 ;
 
+// make the inner joint sphere hollow
+// nonhollow sphere prints and renders faster
+Rh= false;
+
 // radius of outer sphere = Ra
 Ra= 13 ; 
 
@@ -129,7 +133,8 @@ difference() {
     translate([-100,-100,-(50+Ne)])   
       cube ([200,200,50]) ;
     //hollow within sphere
-    sphere (r=Ri-(Ra-Ri-Sk), $fn=F/2);    
+    if (Rh)
+    sphere (r=Ri-(Ra-Ri-Sk), $fn=F/2);
   }
 }
 
