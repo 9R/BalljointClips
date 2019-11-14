@@ -106,14 +106,6 @@ module clip (h=15,d=20, tipW=2, es=2 ) {
     }
 }
 
-//position both clips
-for (i=[0:1]) {
-  rotate ([0,0,180*i])
-    translate([Ka/2,0,-Ne])
-    scale ([Sf,Sf,Kh/13])
-    clip(h=Kh , d=Kd, tipW=Ktip , es=Ksr) ;
-}
-
 //inner sphere
 difference() {
   //sphere with flail (to the right)
@@ -205,5 +197,14 @@ hull(){
     translate([0,0,Ra-(Sk*3)])
     cylinder(r=Rs,h=0.05,$fn=F);        
 }
+
+//position both clips
+for (i=[0:1]) {
+  rotate ([0,0,180*i])
+    translate([Ka/2,0,-Ne])
+    scale ([Sf,Sf,Kh/13])
+    clip(h=Kh , d=Kd, tipW=Ktip , es=Ksr) ;
+}
+
 echo ("                   It takes a very long time to render         ");
 echo ("                        get a cup of tea                     ");
