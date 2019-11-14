@@ -84,7 +84,7 @@ module clip (h=15,d=20, tipW=2, es=2 ) {
         //translate outer shape  upwards to compensate for smoothing
         translate ([0,0, es/2 ])
           // clips basic outer shape
-          hull () {
+          union () {
             //outer cylinder
             cylinder (d=D , h=h, center=true) ;
 
@@ -94,7 +94,7 @@ module clip (h=15,d=20, tipW=2, es=2 ) {
             //create thicker tips at intersections
             for ( i = [-1:2:1] ) { 
               translate ([y,x*i,0])
-                cylinder (d=2, h=h, center=true);
+                cylinder (d=1.5, h=h, center=true);
             }
           }
         // inner clip diameter (will be removed)
