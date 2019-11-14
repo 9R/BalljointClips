@@ -107,95 +107,103 @@ module clip (h=15,d=20, tipW=2, es=2 ) {
 }
 
 //inner sphere
-difference() {
-  //sphere with flail (to the right)
-  union(){ 
-    //sphere   
-    color ("blue")    
-      translate([0,0,0])
-      sphere (r=Ri, $fn=F);
-    //flail
-    color ("pink")
-      rotate ([0,90,0])
-      cylinder(r=Rs,h=Ra,$fn=F);    
-  }
-  //subtraction
-  union(){
-    //lower cutoff
-    translate([-100,-100,-(50+Ne)])   
-      cube ([200,200,50]) ;
-    //hollow within sphere
-    if (Rh)
-    sphere (r=Ri-(Ra-Ri-Sk), $fn=F/2);
+module innerSphere () {
+  difference() {
+    //sphere with flail (to the right)
+    union(){ 
+      //sphere   
+      color ("blue")    
+        translate([0,0,0])
+        sphere (r=Ri, $fn=F);
+      //flail
+      color ("pink")
+        rotate ([0,90,0])
+        cylinder(r=Rs,h=Ra,$fn=F);    
+    }
+    //subtraction
+    union(){
+      //lower cutoff
+      translate([-100,-100,-(50+Ne)])   
+        cube ([200,200,50]) ;
+      //hollow within sphere
+      if (Rh)
+        sphere (r=Ri-(Ra-Ri-Sk), $fn=F/2);
+    }
   }
 }
 
 //outer sphere
-difference(){
-  //moulding
-  color ("green")   
-    translate([0,0,0])
-    sphere (r=Ra, $fn=F);
+module outerSphere () {
+  difference(){
+    //moulding
+    color ("green")   
+      translate([0,0,0])
+      sphere (r=Ra, $fn=F);
 
-  union(){ 
-    //hollow within
-    translate([0,0,0])
-      sphere (r=Ri+Sk, $fn=F);    
-    //lower cutoff
-    translate([-100,-100,-(50+Ne)])   
-      cube ([200,200,50]) ; 
+    union(){ 
+      //hollow within
+      translate([0,0,0])
+        sphere (r=Ri+Sk, $fn=F);    
+      //lower cutoff
+      translate([-100,-100,-(50+Ne)])   
+        cube ([200,200,50]) ; 
 
 
-    //cutout for flail
-    //
-    //lower cutout
-    hull(){
-      //middle flail + slit
-      rotate ([0,90,0])
-        cylinder(r=Rs+Sk,h=Ra*2,$fn=F);     
-      //flail to the front
-      rotate ([0,90,-(Wh/2)])
-        cylinder(r=Rs,h=Ra*2,$fn=F);
-      //flail to the back
-      rotate ([0,90,(Wh/2)])
-        cylinder(r=Rs,h=Ra*2,$fn=F);
-      //flail to the front and down
-      rotate ([0,90-Wu,-(Wh/2)])
-        cylinder(r=Rs,h=Ra*2,$fn=F);
-      //flail to the back and down
-      rotate ([0,90-Wu,(Wh/2)])
-        cylinder(r=Rs,h=Ra*2,$fn=F);   
-      //flail to the front and up
-      rotate ([0,90+Wo,-(Wh/2)])
-        cylinder(r=Rs,h=Ra*2,$fn=F);
-      //flail to the back and up
-      rotate ([0,90+Wo,(Wh/2)])
-        cylinder(r=Rs,h=Ra*2,$fn=F);    
-    }        
-  }    
+      //cutout for flail
+      //
+      //lower cutout
+      hull(){
+        //middle flail + slit
+        rotate ([0,90,0])
+          cylinder(r=Rs+Sk,h=Ra*2,$fn=F);     
+        //flail to the front
+        rotate ([0,90,-(Wh/2)])
+          cylinder(r=Rs,h=Ra*2,$fn=F);
+        //flail to the back
+        rotate ([0,90,(Wh/2)])
+          cylinder(r=Rs,h=Ra*2,$fn=F);
+        //flail to the front and down
+        rotate ([0,90-Wu,-(Wh/2)])
+          cylinder(r=Rs,h=Ra*2,$fn=F);
+        //flail to the back and down
+        rotate ([0,90-Wu,(Wh/2)])
+          cylinder(r=Rs,h=Ra*2,$fn=F);   
+        //flail to the front and up
+        rotate ([0,90+Wo,-(Wh/2)])
+          cylinder(r=Rs,h=Ra*2,$fn=F);
+        //flail to the back and up
+        rotate ([0,90+Wo,(Wh/2)])
+          cylinder(r=Rs,h=Ra*2,$fn=F);    
+      }        
+    }    
+  }
 }
 
 //connection to clips
 // left side to outer sphere
-hull(){
-  //base at clip
-  translate([-(Ka/2)-0.05,-6,-Ne])   
-    cube ([0.1,12,Kh]) ; 
-  //base at sphere
-  rotate ([0,-90,0])
-    translate([0,0,Ri+Sk])
-    cylinder(r=Rs,h=(Ka/2)-Ri,$fn=F);        
+module connectionLeft () {
+  hull(){
+    //base at clip
+    translate([-(Ka/2)-0.05,-6,-Ne])   
+      cube ([0.1,12,Kh]) ; 
+    //base at sphere
+    rotate ([0,-90,0])
+      translate([0,0,Ri+Sk])
+      cylinder(r=Rs,h=(Ka/2)-Ri,$fn=F);        
+  }
 }
 
 //right side to flail
-hull(){
-  //base at clip
-  translate([(Ka/2)+0.05,-6,-Ne])   
-    cube ([0.9,12,Kh]) ;
-  //base at flail
-  rotate ([0,90,0])
-    translate([0,0,Ra-(Sk*3)])
-    cylinder(r=Rs,h=0.05,$fn=F);        
+module connectionRight () {
+  hull(){
+    //base at clip
+    translate([(Ka/2)+0.05,-6,-Ne])   
+      cube ([0.9,12,Kh]) ;
+    //base at flail
+    rotate ([0,90,0])
+      translate([0,0,Ra-(Sk*3)])
+      cylinder(r=Rs,h=0.05,$fn=F);        
+  }
 }
 
 //position both clips
@@ -205,6 +213,13 @@ for (i=[0:1]) {
     scale ([Sf,Sf,Kh/13])
     clip(h=Kh , d=Kd, tipW=Ktip , es=Ksr) ;
 }
+
+innerSphere () ;
+
+outerSphere () ;
+
+connectionLeft () ;
+connectionRight () ;
 
 echo ("                   It takes a very long time to render         ");
 echo ("                        get a cup of tea                     ");
