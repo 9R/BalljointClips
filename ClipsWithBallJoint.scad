@@ -49,7 +49,7 @@ Wh= 0 ;
 Wu= 90 ;
 
 // angle of possible upward rotation (upside down) = Wo
-Wo= 0 ;
+Wo= 2 ;
 
 //calculatoin of h in a sphere section to get the position of the 0 plane
 Ne=-Ri+(Ri+sqrt((Ri*Ri)-(Fi/3.1415)));
@@ -180,29 +180,13 @@ module outerSphere () {
 }
 
 //connection to clips
-// left side to outer sphere
-module connectionLeft () {
-  hull(){
-    //base at clip
-    translate([-(Ka/2)-0.05,-6,-Ne])   
-      cube ([0.1,12,Kh]) ; 
-    //base at sphere
-    rotate ([0,-90,0])
-      translate([0,0,Ri+Sk])
-      cylinder(r=Rs,h=(Ka/2)-Ri,$fn=F);        
-  }
-}
-
-//right side to flail
-module connectionRight () {
-  hull(){
-    //base at clip
-    translate([(Ka/2)+0.05,-6,-Ne])   
-      cube ([0.9,12,Kh]) ;
-    //base at flail
-    rotate ([0,90,0])
-      translate([0,0,Ra-(Sk*3)])
-      cylinder(r=Rs,h=0.05,$fn=F);        
+module connectionPlate () {
+  hull () {
+    translate ([Ka/2,0,0])
+    cube ([0.1,12,Kh], center=true) ;
+    rotate([0,90,0])
+    translate ([0,0,Ri+Sk+1.5])
+    cylinder (r=Rs, h=0.1) ;
   }
 }
 
@@ -214,12 +198,14 @@ for (i=[0:1]) {
     clip(h=Kh , d=Kd, tipW=Ktip , es=Ksr) ;
 }
 
+//position both connection plates
+for (i=[0:1]) {
+  rotate ([0,0,180*i])
+  connectionPlate () ;
+}
+
 innerSphere () ;
-
 outerSphere () ;
-
-connectionLeft () ;
-connectionRight () ;
 
 echo ("                   It takes a very long time to render         ");
 echo ("                        get a cup of tea                     ");
