@@ -2,7 +2,7 @@
 //#####################
 
 // set true to render only on clip for testing
-testClip=true ;
+testClip=false ;
 
 // distance of clips to each other = Ka
 Ka= 27 ;
@@ -55,7 +55,7 @@ Wu= 90 ;
 Wo= 2 ;
 
 //calculatoin of h in a sphere section to get the position of the 0 plane
-Ne=-Ri+(Ri+sqrt((Ri*Ri)-(Fi/3.1415)));
+Ne=-Ri+(Ri+sqrt((Ri*Ri)-(Fi/PI)));
 
 
 //clip generation module
