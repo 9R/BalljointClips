@@ -1,6 +1,9 @@
 // variable definitions
 //#####################
 
+// set true to render only on clip for testing
+testClip=true ;
+
 // distance of clips to each other = Ka
 Ka= 27 ;
 
@@ -190,22 +193,30 @@ module connectionPlate () {
   }
 }
 
-//position both clips
-for (i=[0:1]) {
-  rotate ([0,0,180*i])
-    translate([Ka/2,0,-Ne])
-    scale ([Sf,Sf,Kh/13])
-    clip(h=Kh , d=Kd, tipW=Ktip , es=Ksr) ;
+
+if (testClip!=true) {
+
+  //position both clips
+  for (i=[0:1]) {
+    rotate ([0,0,180*i])
+      translate([Ka/2,0,-Ne])
+      scale ([Sf,Sf,Kh/13])
+      clip(h=Kh , d=Kd, tipW=Ktip , es=Ksr) ;
+  }
+
+  //position both connection plates
+  for (i=[0:1]) {
+    rotate ([0,0,180*i])
+      connectionPlate () ;
+  }
+
+  innerSphere () ;
+  outerSphere () ;
 }
 
-//position both connection plates
-for (i=[0:1]) {
-  rotate ([0,0,180*i])
-  connectionPlate () ;
+else {
+  clip(h=Kh , d=Kd, tipW=Ktip , es=Ksr) ;
 }
-
-innerSphere () ;
-outerSphere () ;
 
 echo ("                   It takes a very long time to render         ");
 echo ("                        get a cup of tea                     ");
