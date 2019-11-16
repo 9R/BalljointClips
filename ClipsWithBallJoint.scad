@@ -183,10 +183,10 @@ module outerSphere () {
 module connectionPlate () {
   hull () {
     translate ([Ka/2,0,0])
-    cube ([0.1,12,Kh], center=true) ;
+      cube ([0.1,12,Kh], center=true) ;
     rotate([0,90,0])
-    translate ([0,0,Ri+Sk+1.5])
-    cylinder (r=Rs, h=0.1) ;
+      translate ([0,0,Ri+Sk+1.5])
+      cylinder (r=Rs, h=0.1) ;
   }
 }
 
